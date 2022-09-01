@@ -1,5 +1,4 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,141 +55,138 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   }).toList(),
                 ),
                 const Divider(height: 50),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
+                if (cart.coupon == null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 50,
+                              child: TextField(
+                                controller: _tc,
+                                decoration: InputDecoration(
+                                  hintText: "Cupón",
+                                  isDense: true,
+                                  enabledBorder: inputBorder,
+                                  border: inputBorder,
+                                  errorBorder: inputBorder,
+                                  focusedBorder: inputBorder,
+                                  disabledBorder: inputBorder,
+                                  focusedErrorBorder: inputBorder,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
                             height: 50,
-                            child: TextField(
-                              controller: _tc,
-                              decoration: InputDecoration(
-                                hintText: "Cupón",
-                                isDense: true,
-                                enabledBorder: inputBorder,
-                                border: inputBorder,
-                                errorBorder: inputBorder,
-                                focusedBorder: inputBorder,
-                                disabledBorder: inputBorder,
-                                focusedErrorBorder: inputBorder,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                cart.getCoupon(_tc.text);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                               ),
+                              child: const Text("Aplicar"),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: const Text("Aplicar"),
+                        ],
+                      ),
+                      if (cart.error != null)
+                        Text(
+                          cart.error!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red,
                           ),
-                        ),
-                      ],
-                    ),
-                    if (cart.error != null)
-                      Text(
-                        cart.error!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red,
-                        ),
-                      )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Cupón ${cart.coupon!.code} aplicado",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        )
+                    ],
+                  ),
+                if (cart.coupon != null)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Cupón ${cart.coupon!.code} aplicado",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      onPressed: () {
-                        cart.coupon = null;
-                        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-                        cart.notifyListeners();
-                      },
-                      icon: const Icon(Icons.delete),
-                      color: Colors.grey,
-                    )
-                  ],
-                ),
+                      const SizedBox(width: 10),
+                      IconButton(
+                        onPressed: () {
+                          cart.coupon = null;
+                          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                          cart.notifyListeners();
+                        },
+                        icon: const Icon(Icons.delete),
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
                 const Divider(height: 50),
                 Wrap(
                   runSpacing: 15,
                   children: [
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                             child: Text(
                           "Subtotal",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w600,
                           ),
                         )),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Subtotal",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "calcular",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                             child: Text(
                           "Descuento por cupón",
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )),
-                        // ignore: unnecessary_null_comparison
-
-                        Text(
-                          "Descuento por cupón",
-                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
-                        )
+                        )),
+                        Text(
+                          "calcular",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                     ),
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                             child: Text(
                           "Costo de envío",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w600,
                           ),
                         )),
                         Text(
-                          "Costo de envío",
-                          style: const TextStyle(
-                            fontSize: 16,
+                          "calcular",
+                          style: TextStyle(
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -200,19 +196,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 const Divider(height: 50),
                 Row(
-                  children: [
-                    const Expanded(
+                  children: const [
+                    Expanded(
                       child: Text(
                         "Total",
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                     Text(
-                      "Total",
-                      style: const TextStyle(
+                      "calcular",
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                       ),
