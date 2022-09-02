@@ -28,15 +28,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   //creando variables
-  int _subTotal = 0;
-  int _costDelivery = 0;
-  int _constDiscount = 0;
+  int subTotal = 0;
+  int costDelivery = 0;
+  int costDiscount = 0;
 
-  int _total = 0;
-  int _valueTotalDiscount = 0;
+  int total = 0;
+  int valueTotalDiscount = 0;
 
-  List<Product> _products = [];
-  String _valueCoupon = "";
+  List<Product> products = [];
+  String valueCoupon = "";
 
   final inputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -52,8 +52,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
       body: Consumer<CatalogCartAndCheckout>(
         builder: (context, cart, child) {
           //Verificar los productos seleccionados
-          _products = cart.products.where((map) => map.selected == 1).toList();
-          int? subTotal = cart.calculeSubTotal(_products, _constDiscount);
+          products = cart.products.where((map) => map.selected == 1).toList();
+          int? subTotal = cart.calculeSubTotal(products, costDiscount);
+          int costDelivery = cart.calculeCostDelivery(subTotal!);
 
           return SingleChildScrollView(
             controller: _sc,
@@ -170,7 +171,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ],
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
                             child: Text(
                           "Descuento por cupón",
@@ -180,7 +181,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         )),
                         Text(
-                          "calcular",
+                          costDiscount <= 0 ? "\$ 0" : "\$$costDiscount",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
