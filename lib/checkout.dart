@@ -138,7 +138,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          "Cupón ${cart.coupon!.code} aplicado",
+                          cart.coupon != null
+                              ? "Cupón ${cart.coupon!.code} aplicado"
+                              : "Cupón de $valueCoupon% aplicado",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -149,6 +151,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       IconButton(
                         onPressed: () {
                           cart.coupon = null;
+                          costDiscount = 0;
+                          _tc.text = "";
+                          cart.coupon = null;
                           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
                           cart.notifyListeners();
                         },
@@ -158,68 +163,92 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ],
                   ),
                 const Divider(height: 50),
-                Wrap(
-                  runSpacing: 15,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Text(
-                          "Subtotal",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                if (products.isNotEmpty)
+                  Wrap(
+                    runSpacing: 15,
+                    children: [
+                      Row(
+                        children: [
+                          const Expanded(
+                              child: Text(
+                            "Subtotal",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                "\$$subTotal",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              costDiscount > 0
+                                  ? const Text(
+                                      "Descuento aplicado por compra de produtos en paquete",
+                                      style: TextStyle(
+                                          fontSize: 8, color: Colors.red))
+                                  : Container()
+                            ],
                           ),
-                        )),
-                        Text(
-                          "$subTotal",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Expanded(
+                              child: Text(
+                            "Descuento por cupón",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )),
+                          // ignore: unnecessary_null_comparison
+                          valueCoupon == null
+                              ? Text(
+                                  costDiscount <= 0
+                                      ? "\$ 0"
+                                      : "\$$costDiscount",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              : Text(
+                                  "\$ $valueTotalDiscount ($valueCoupon%) ",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Expanded(
+                              child: Text(
+                            "Costo de envío",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )),
+                          Text(
+                            costDelivery == 0.0 ? "Gratis" : "\$$costDelivery",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Text(
-                          "Descuento por cupón",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )),
-                        Text(
-                          costDiscount <= 0 ? "\$ 0" : "\$$costDiscount",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Text(
-                          "Costo de envío",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )),
-                        Text(
-                          costDelivery == 0.0 ? "Gratis" : "\$$costDelivery",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        ],
+                      ),
+                    ],
+                  ),
                 const Divider(height: 50),
                 Row(
                   children: const [
