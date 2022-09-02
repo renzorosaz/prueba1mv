@@ -107,9 +107,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 int? subTotalTemp = cart.calculeSubTotal(
                                     products, discountTemp);
 
+                                int? totalTemp = cart.calculateTotal(
+                                    subTotalTemp!, costDelivery, discountTemp);
+
                                 setState(() {
                                   costDiscount = discountTemp;
+                                  valueTotalDiscount =
+                                      totalTemp - subTotalTemp.toInt();
                                   subTotal = subTotalTemp;
+                                  total = totalTemp;
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -251,7 +257,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 const Divider(height: 50),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text(
                         "Total",
@@ -262,7 +268,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                     ),
                     Text(
-                      "calcular",
+                      "\$ $total",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,

@@ -69,27 +69,47 @@ class CatalogCartAndCheckout extends ChangeNotifier {
   }
 
   int? calculeSubTotal(List<Product> productsSelected, int discount) {
-    int? _subTotal = 0;
-    List<int> _productsTotalCount = [];
+    int? subTotal = 0;
+    List<int> productToSumaTotal = [];
 
-    //RECORRER LA LISTA DE PRODUCTOS  SELECCIONADOS
+    //RECORRER LA LISTA DE PRODUCTOS SELECCIONADOS
     for (int i = 0; i < productsSelected.length; i++) {
-      int _sumListProducts;
-      int _discountValue;
+      int sumListProducts;
+      int discountValue;
+      //ProductosEXAMPLE with  2 3  6
+      //SI TIENE UN CUPON INGRESADO
+      if (discount > 0) {
+        //OBTENGO VALOS DE DESCUENTO SI TENGO UN CUPON INGRESADO
+        discountValue = (productsSelected[i].price! * (10 / 100)).toInt();
 
-      _sumListProducts =
-          productsSelected[i].quantity! * productsSelected[i].price!;
-      //CADA VEZ QUE RECORRE LA LISTA DE PRODUCTS AGREGA A UNA NUEVA LISTA DE SUMATOTAL
-      _productsTotalCount.add(_sumListProducts.toInt());
-      // }
-      //CALCULAR SUMA TOTAL CON PRODUCTOS EN LISTA DE SUMATOTAL
-      var _sumSubTotal = 0;
-      for (var sum in _productsTotalCount) {
-        _sumSubTotal += sum;
+        sumListProducts = productsSelected[i].quantity! *
+            (productsSelected[i].price! - discountValue);
+        //CADA VEZ QUE RECORRE LA LISTA DE PRODUCTS AGREGA A UNA NUEVA LISTA DE SUMATOTAL
+        productToSumaTotal.add(sumListProducts.toInt());
       }
-      subTotal = _sumSubTotal;
+      //SI NO IENE UN CUPON INGRESADO
+      else {
+        sumListProducts =
+            productsSelected[i].quantity! * productsSelected[i].price!;
+        //CADA VEZ QUE RECORRE LA LISTA DE PRODUCTS AGREGA A UNA NUEVA LISTA DE SUMATOTAL
+        productToSumaTotal.add(sumListProducts.toInt());
+      }
+
+      //CALCULAR SUMA TOTAL CON PRODUCTOS EN LISTA DE SUMATOTAL
+      var sumSubTotal = 0;
+      for (var sum in productToSumaTotal) {
+        sumSubTotal += sum;
+      }
+      subTotal = sumSubTotal;
     }
+
     return subTotal;
+  }
+
+  int calculateTotal(
+      int subTotal, int calculeCostDelivery, int valueDiscountCupon) {
+    total = subTotal.toInt() + costDelivery - discountValueCoupon;
+    return total;
   }
 
   int calculeDiscountCupon(
@@ -103,9 +123,7 @@ class CatalogCartAndCheckout extends ChangeNotifier {
 
       for (int i = 0; i < productsSelected.length; i++) {
         //METODO PARA VERIFICAR SI EXISTE PRODUCTOS EN  PAQUETES
-
         //AGREGA LIST INT DE MATCHS DE TODOS LOS PRODUCTOS
-
         if (productsSelected[i].match != null) {
           listIdMatch.addAll(productsSelected[i].match!.toList());
         } else {
