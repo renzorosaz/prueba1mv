@@ -58,7 +58,30 @@ class CatalogCartAndCheckout extends ChangeNotifier {
     }
   }
 
-  int? calculeSubTotal(List<Product> productsSelected, int discount) {}
+  int? calculeSubTotal(List<Product> productsSelected, int discount) {
+    int? _subTotal = 0;
+    List<int> _productsTotalCount = [];
+
+    //RECORRER LA LISTA DE PRODUCTOS  SELECCIONADOS
+    for (int i = 0; i < productsSelected.length; i++) {
+      int _sumListProducts;
+      int _discountValue;
+
+      _sumListProducts =
+          productsSelected[i].quantity! * productsSelected[i].price!;
+      //CADA VEZ QUE RECORRE LA LISTA DE PRODUCTS AGREGA A UNA NUEVA LISTA DE SUMATOTAL
+      _productsTotalCount.add(_sumListProducts.toInt());
+      // }
+      //CALCULAR SUMA TOTAL CON PRODUCTOS EN LISTA DE SUMATOTAL
+      var _sumSubTotal = 0;
+      for (var sum in _productsTotalCount) {
+        _sumSubTotal += sum;
+      }
+      subTotal = _sumSubTotal;
+    }
+    return subTotal;
+  }
+
   getCoupon(String code) async {
     error = null;
     var cupon = await Services().getCoupon(code);

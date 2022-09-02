@@ -28,15 +28,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   //creando variables
-  int subTotal = 0;
-  int costDelivery = 0;
-  int constDiscount = 0;
+  int _subTotal = 0;
+  int _costDelivery = 0;
+  int _constDiscount = 0;
 
-  int total = 0;
-  int valueTotalDiscount = 0;
+  int _total = 0;
+  int _valueTotalDiscount = 0;
 
-  List<Product> products = [];
-  String valueCoupon = "";
+  List<Product> _products = [];
+  String _valueCoupon = "";
 
   final inputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -51,7 +51,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(title: const Text("Pago")),
       body: Consumer<CatalogCartAndCheckout>(
         builder: (context, cart, child) {
-          products = cart.products.where((map) => map.selected == 1).toList();
+          //Verificar los productos seleccionados
+          _products = cart.products.where((map) => map.selected == 1).toList();
+          int? subTotal = cart.calculeSubTotal(_products, _constDiscount);
 
           return SingleChildScrollView(
             controller: _sc,
@@ -149,7 +151,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   runSpacing: 15,
                   children: [
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
                             child: Text(
                           "Subtotal",
@@ -159,7 +161,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         )),
                         Text(
-                          "calcular",
+                          "$subTotal",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
