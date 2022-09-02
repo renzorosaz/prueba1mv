@@ -58,6 +58,16 @@ class CatalogCartAndCheckout extends ChangeNotifier {
     }
   }
 
+  int calculeCostDelivery(int subTotal) {
+    //DEVLIVERY FREE SI SUBTOTAL ES MAYOR QUE 500
+    if (subTotal >= 500) {
+      costDelivery = 0;
+    } else {
+      return costDelivery;
+    }
+    return costDelivery;
+  }
+
   int? calculeSubTotal(List<Product> productsSelected, int discount) {
     int? _subTotal = 0;
     List<int> _productsTotalCount = [];
@@ -80,6 +90,46 @@ class CatalogCartAndCheckout extends ChangeNotifier {
       subTotal = _sumSubTotal;
     }
     return subTotal;
+  }
+
+  int calculeDiscountCupon(
+      int subTotal, List<Product> productsSelected, String discount) {
+    if (subTotal < 500) {
+      discountValueCoupon = 0;
+      return discountValueCoupon;
+    } else {
+      //aplicar descuento recibido a cada producto ( fijo o porcentaje)
+      List<int> listIdMatch = [];
+
+      for (int i = 0; i < productsSelected.length; i++) {
+        //METODO PARA VERIFICAR SI EXISTE PRODUCTOS EN  PAQUETES
+
+        //AGREGA LIST INT DE MATCHS DE TODOS LOS PRODUCTOS
+
+        if (productsSelected[i].match != null) {
+          listIdMatch.addAll(productsSelected[i].match!.toList());
+        } else {
+          //SI NO ENCUNTRO SIGUE REECORRIENDO
+        }
+        //VERIFICO SI ALGUNA DE LA LISTA DE MATCHS CONTIENE EL ID DE ALGUN PRODUCTO
+        if (listIdMatch.contains(productsSelected[i].id)) {
+          //APLICO 10 % DE DESCUENTO
+          discountValueCoupon = 10;
+        } else {
+          discountValueCoupon = 0;
+        }
+      }
+      //TENIENDO EL VALOR DE DESCUENTO VERIFICAR SI ES TIPO FIJO O UN PORCENTAJE
+      if (productsSelected.isNotEmpty && discount == "fijo") {
+        return discountValueCoupon;
+      } else if (productsSelected.isNotEmpty && discount != "fijo") {
+        discountValueCoupon =
+            (subTotal.toInt() * (int.parse(discount) / 100)).toInt();
+        return discountValueCoupon;
+      }
+    }
+
+    return discountValueCoupon;
   }
 
   getCoupon(String code) async {

@@ -71,7 +71,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   }).toList(),
                 ),
                 const Divider(height: 50),
-                if (cart.coupon == null)
+                if (costDiscount == 0)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,7 +100,17 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
-                                cart.getCoupon(_tc.text);
+                                valueCoupon = _tc.text;
+                                int? discountTemp = cart.calculeDiscountCupon(
+                                    subTotal!, products, valueCoupon);
+
+                                int? subTotalTemp = cart.calculeSubTotal(
+                                    products, discountTemp);
+
+                                setState(() {
+                                  costDiscount = discountTemp;
+                                  subTotal = subTotalTemp;
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -123,7 +133,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         )
                     ],
                   ),
-                if (cart.coupon != null)
+                if (costDiscount > 0)
                   Row(
                     children: [
                       Expanded(
@@ -190,7 +200,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ],
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
                             child: Text(
                           "Costo de envío",
@@ -200,7 +210,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         )),
                         Text(
-                          "calcular",
+                          costDelivery == 0.0 ? "Gratis" : "\$$costDelivery",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
