@@ -9,6 +9,12 @@ class CatalogCartAndCheckout extends ChangeNotifier {
   int? sum;
   String? error;
 
+  //to checkout products
+  int subTotal = 0;
+  int total = 0;
+  int discountValueCoupon = 0;
+  int costDelivery = 0;
+
   init() async {
     await fetchProducts();
   }
