@@ -51,6 +51,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(title: const Text("Pago")),
       body: Consumer<CatalogCartAndCheckout>(
         builder: (context, cart, child) {
+          products = cart.products.where((map) => map.selected == 1).toList();
+
           return SingleChildScrollView(
             controller: _sc,
             dragStartBehavior: DragStartBehavior.down,

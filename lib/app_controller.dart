@@ -9,19 +9,6 @@ class CatalogCartAndCheckout extends ChangeNotifier {
   int? sum;
   String? error;
 
-  //TO CHECKOUT
-  int subTotal = 0;
-  int total = 0;
-  int valueCoupon = 0;
-  int valueMinCoupon = 0;
-  int discountValueCoupon = 0;
-  int costDelivery = 0;
-  int discountTotalValue = 0;
-
-  String typeCoupon = "";
-
-  List<Product> productsSelected = [];
-
   init() async {
     await fetchProducts();
   }
@@ -65,6 +52,7 @@ class CatalogCartAndCheckout extends ChangeNotifier {
     }
   }
 
+  int? calculeSubTotal(List<Product> productsSelected, int discount) {}
   getCoupon(String code) async {
     error = null;
     var cupon = await Services().getCoupon(code);
