@@ -84,7 +84,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 controller: _tc,
                                 decoration: InputDecoration(
                                   hintText: "Cupón",
-                                  maxLength: 8,
                                   isDense: true,
                                   enabledBorder: inputBorder,
                                   border: inputBorder,
@@ -140,6 +139,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         )
                     ],
                   ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Ingrese 'fijo' para aplicar 10% ",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        )),
+                    Text(
+                        "Ingrese un 'número de 2 cifras' para aplicar el descuento",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        )),
+                  ],
+                ),
                 if (costDiscount > 0)
                   Row(
                     children: [

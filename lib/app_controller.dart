@@ -141,9 +141,14 @@ class CatalogCartAndCheckout extends ChangeNotifier {
       if (productsSelected.isNotEmpty && discount == "fijo") {
         return discountValueCoupon;
       } else if (productsSelected.isNotEmpty && discount != "fijo") {
-        discountValueCoupon =
-            (subTotal.toInt() * (int.parse(discount) / 100)).toInt();
-        return discountValueCoupon;
+        //solo aceptará números
+        if (discount.length <= 2) {
+          discountValueCoupon =
+              (subTotal.toInt() * (int.parse(discount) / 100)).toInt();
+          return discountValueCoupon;
+        } else {
+          print("es un digito mas de 2 cifras");
+        }
       }
     }
 
