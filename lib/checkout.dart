@@ -84,6 +84,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 controller: _tc,
                                 decoration: InputDecoration(
                                   hintText: "Cupón",
+                                  maxLength: 8,
                                   isDense: true,
                                   enabledBorder: inputBorder,
                                   border: inputBorder,
